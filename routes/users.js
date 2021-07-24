@@ -70,4 +70,20 @@ router.delete("/userdelete/:id",(req,res)=>{
     })
 })
 
+// login user
+router.post('/login', async(req, res) => {
+    const userdata = await service.emailChecking(req.body.email);
+    if (userdata) {
+        const passCheck = await service.PassChecking(userdata, req.body.password);
+        if (passCheck) {
+            console.log({ "Message": "Login successfully" })
+            res.send({ "Message": "Login successfully" });
+        } else {
+            res.send({ "sorry": "wrong password! " });
+        }
+    } else {
+        res.send({ "sorry": "This email not exist!" });
+    }
+})
+
 module.exports = router;

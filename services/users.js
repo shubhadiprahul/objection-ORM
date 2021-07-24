@@ -1,4 +1,5 @@
 const Users = require('../model/users');
+const bcrypt =  require('bcrypt')
 
 module.exports = class UserService{
     async create(details){
@@ -24,5 +25,16 @@ module.exports = class UserService{
         // console.log(userId,"userId");
         const userDelete = await Users.query().deleteById(userId);
         return userDelete;
+    }
+
+    async emailChecking(email) {
+        const userDetails = await Users.query().findOne({
+            email: email
+        })
+        return userDetails;
+    }
+
+    async PassChecking(userInfo, Pass) {
+        return await bcrypt.compare(Pass, userInfo.password)
     }
 }
